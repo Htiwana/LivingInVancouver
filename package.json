@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,13 @@
   },
   "homepage": "https://github.com/eroub/csc485-project#readme",
   "dependencies": {
-    "d3-node": "^2.2.1"
+    "cors": "^2.8.5",
+    "d3": "^5.15.0",
+    "d3-node": "^2.2.1",
+    "express": "^4.17.1",
+    "http-server": "^0.12.1",
+    "jsdom": "^16.2.0",
+    "nodemon": "^2.0.2",
+    "path": "^0.12.7"
   }
 }
