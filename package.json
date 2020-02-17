@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/eroub/csc485-project/issues"
   },
-  "homepage": "https://github.com/eroub/csc485-project#readme"
+  "homepage": "https://github.com/eroub/csc485-project#readme",
+  "dependencies": {
+    "d3-node": "^2.2.1"
+  }
 }
