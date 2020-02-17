@@ -1,6 +1,6 @@
-##Repository for CSC485 Visualization Project  
+## Repository for CSC485 Visualization Project  
 
-###Instructions:  
+### Instructions:  
 
 1. Go to working directory  
 2. Run `npm install`    
