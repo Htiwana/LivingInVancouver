@@ -61,7 +61,7 @@ d3.select("#vanmap").append("image")
     .attr("xlink:href","../data/van-albers.svg")
     .attr("width", 500)
     .attr("height", 500)
-	
+
 function map(err, world)
 {
 	console.log("data", world)
@@ -73,10 +73,10 @@ function map(err, world)
 		  .append( "svg" )
 		  .attr( "width", width )
 		  .attr( "height", height );
-	  
+
 	// Projection
 	var projection = d3.geoMercator().fitExtent([[10, 10], [800 - 10, 600 - 10]], world)
-	  
+
 	// var projection = d3.geo.albers()
 		// .center([0, 37.8])
 		// .rotate([85.8,0])
@@ -85,16 +85,16 @@ function map(err, world)
 
 	// var geoPath = d3.geo.path()
 		// .projection(projection);
-		
+
 	// The path
 	var geoPath = d3.geoPath()
 		.projection(projection);
-		
+
 	svg.append("g")
 		.selectAll("path")
 		.data(world.features)
 		.enter()
 		.append("path")
 		.attr( "d", geoPath )
-		.attr("class","county");
+		.attr("class",d=>d.properties.name);
 }
