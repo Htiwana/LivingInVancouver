@@ -24,8 +24,64 @@ d3.select("#vanmap").append("image")
     .attr("width", 500)
     .attr("height", 500)
 
-for ( let i = 0; i< 5; i++){
-  console.log(i);
+
+function splitwork(data,map){
+  plotbars(data);
+  plotmap(map);
+}
+
+
+function plotbars(data){
+  console.log(data);
+  var barWidth = svgWidth/data.length;
+
+  var svg = d3.select('svg')
+     .attr("width", svgWidth)
+     .attr("height", svgHeight);
+
+  var groups = svg.selectAll("g")
+      .data(data)
+      .enter()
+      .append("g");
+
+  groups.append("rect")
+      .attr("x", (d,i) => i*(barWidth))
+      .attr("y", d => svgHeight - d.pop/scale)
+      .attr("height", function(d) {
+          return d.pop/scale;
+      })
+      .attr("width", barWidth-barPadding);
+
+  groups.append("text")
+      .text(d => d.area)
+      .attr('x',(d,i) => i*(barWidth))
+      .attr('y', 50)
+      .attr("transform", d => "rotate(0)");
+}
+
+
+function plotmap(world){
+  var width = 900,height = 600;
+
+  var mapsvg = d3.select( "body" )
+      .append( "svg" )
+      .attr( "width", width )
+      .attr( "height", height );
+
+  // Projection
+  var projection = d3.geoMercator().fitExtent([[10, 10], [800 - 10, 600 - 10]], world)
+
+  var geoPath = d3.geoPath()
+    .projection(projection);
+
+  areas = mapsvg.append("g")
+    .selectAll("path")
+    .data(world.features)
+    .enter()
+    .append("path")
+    .attr( "d", geoPath )
+    .attr("class",d=>d.properties.name)
+    .attr('fill', "purple");
 }
 
 
@@ -33,62 +89,10 @@ function accessor(error,data){
       if(error){
         console.log(error);
       }else{
-        console.log(data);
-
-      d3.json("../data/van.json", map)
-      function map(err, world)
-      {
-      	console.log("data", world)
-
-      	var width = 900,height = 600;
-
-      	var svg = d3.select( "body" )
-      		  .append( "svg" )
-      		  .attr( "width", width )
-      		  .attr( "height", height );
-
-      	// Projection
-      	var projection = d3.geoMercator().fitExtent([[10, 10], [800 - 10, 600 - 10]], world)
-
-      	var geoPath = d3.geoPath()
-      		.projection(projection);
-
-      	svg.append("g")
-      		.selectAll("path")
-      		.data(world.features)
-      		.enter()
-      		.append("path")
-      		.attr( "d", geoPath )
-      		.attr("class",d=>d.properties.name)
-          .attr('fill', "purple")
-          .attr('fill-opacity',"0.5");
-      }
-
-
-
-    var barWidth = svgWidth/data.length;
-
-    var svg = d3.select('svg')
-       .attr("width", svgWidth)
-       .attr("height", svgHeight);
-
-    var groups = svg.selectAll("g")
-        .data(data)
-        .enter()
-        .append("g");
-
-    groups.append("rect")
-        .attr("x", (d,i) => i*(barWidth))
-        .attr("y", d => svgHeight - d.pop/scale)
-        .attr("height", function(d) {
-            return d.pop/scale;
-        })
-        .attr("width", barWidth-barPadding);
-
-    groups.append("text")
-        .text(d => d.area)
-        .attr('x',(d,i) => i*(barWidth))
-        .attr('y', 50)
-        .attr("transform", d => "rotate(0)");
+        d3.json("../data/van.json", map)
+        function map(err, world)
+        {
+          splitwork(data,world);
+        }
     }
 }
