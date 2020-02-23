@@ -15,7 +15,6 @@ function conversor(d){
       pop: parseInt(d.pop.replace(",","")),
       potatoes: +d.potatoes
     };
-
 }
 
 // this is just displaying a static svg i created folloing part one of https://medium.com/@mbostock/command-line-cartography-part-1-897aa8f8ca2c
@@ -27,7 +26,7 @@ d3.select("#vanmap").append("image")
 
 function splitwork(data,map){
   plotbars(data);
-  plotmap(map);
+  plotmap(map,data);
 }
 
 
@@ -60,7 +59,8 @@ function plotbars(data){
 }
 
 
-function plotmap(world){
+function plotmap(world,data){
+
   var width = 900,height = 600;
 
   var mapsvg = d3.select( "body" )
@@ -81,7 +81,18 @@ function plotmap(world){
     .append("path")
     .attr( "d", geoPath )
     .attr("class",d=>d.properties.name)
-    .attr('fill', "purple");
+    .attr('fill', "purple")
+    .attr('fill-opacity',opacity_set);
+
+    function opacity_set(d){
+      for ( let i = 0; i < 22; i++){
+        console.log(data[i].area);
+        console.log(d.properties.name)
+        if(data[i].area == d.properties.name){
+          return "" + ((data[i].pop - 6000)/38000)
+        }
+      }
+    }
 }
 
 

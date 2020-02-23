@@ -19,7 +19,6 @@ h1
 
 path
 {
-	fill: #ccc;
 	stroke: #fff;
 	stroke-width: .5px;
 }
@@ -27,18 +26,6 @@ path
 path:hover
 {
 	opacity: 0.5;
-}
-
-
-
-.Downtown
-{
-  stroke: #fff;
-  fill:#005DAA;
-}
-
-.Eastside
-{
-  stroke: #fff;
-  fill:red;
+  stroke: red;
+  stroke-width: 2px;
 }
