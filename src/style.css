@@ -8,9 +8,6 @@ body
 
 h1
 {
-	position: absolute;
-	left: 20px;
-	top: 10px;
 	font-family: "Proxima Nova", Montserrat, sans-serif;
 	font-size: 2em;
 	font-weight: 100;
