@@ -60,8 +60,8 @@ function accessor(error,data){
       		.append("path")
       		.attr( "d", geoPath )
       		.attr("class",d=>d.properties.name)
-          .attr('fill', "purple")
-          .attr('fill-opacity',"0.5");
+            // .attr('fill', "purple")
+            // .attr('fill-opacity',"0.5");
       }
 
 
