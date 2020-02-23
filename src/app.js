@@ -52,13 +52,16 @@ function plotbars(data){
 
 
 function plotmap(world,data){
-
+	
   var width = 900,height = 600;
 
   var mapsvg = d3.select( "#vanmap" )
-      .append( "svg" )
-      .attr( "width", width )
-      .attr( "height", height );
+    .append( "svg" )
+    .attr( "width", width )
+    .attr( "height", height );
+  
+  var tooltip = d3.select("#vanmap").append('svg')
+    .attr("class", "hidden tooltip");
 
   // Projection
   var projection = d3.geoMercator().fitExtent([[10, 10], [800 - 10, 600 - 10]], world)
@@ -66,7 +69,7 @@ function plotmap(world,data){
   var geoPath = d3.geoPath()
     .projection(projection);
 
-  areas = mapsvg.append("g")
+  var areas = mapsvg.append("g")
     .selectAll("path")
     .data(world.features)
     .enter()
@@ -74,7 +77,24 @@ function plotmap(world,data){
     .attr( "d", geoPath )
     .attr("class",d=>d.properties.name)
     .attr('fill', "purple")
-    .attr('fill-opacity',opacity_set);
+    .attr('fill-opacity',opacity_set)
+	
+	// Tooltip on mouse over area
+	.on("mousemove", function(d)
+	{
+		var mouse = d3.mouse(mapsvg.node()).map(function(d) {
+			return parseInt(d);
+		})
+		
+		tooltip.classed("hidden", false)
+			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[0] + 15) + "px")
+			.text(d.properties.name);
+			// console.log(d.properties.name);
+	})
+	.on("mouseout", function()
+	{
+		tooltip.classed("hidden", true);
+	});
 
     function opacity_set(d){
       for ( let i = 0; i < 22; i++){
