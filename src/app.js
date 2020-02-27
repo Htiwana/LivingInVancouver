@@ -76,7 +76,7 @@ function plotmap(world,data){
     .append("path")
     .attr( "d", geoPath )
     .attr("class",d=>d.properties.name)
-    .attr('fill', "purple")
+    .attr('fill', "#0f4c75")
     .attr('fill-opacity',opacity_set)
 
 	// Tooltip on mouse over area
@@ -98,7 +98,7 @@ function plotmap(world,data){
     function opacity_set(d){
       for ( let i = 0; i < 22; i++){
         if(data[i].area == d.properties.name){
-          return "" + ((data[i].pop - 6000)/38000)
+          return "" + (((data[i].pop)/38000))
         }
       }
     }
