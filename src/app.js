@@ -52,15 +52,15 @@ function plotbars(data){
 
 
 function plotmap(world,data){
-	
+
   var width = 900,height = 600;
 
   var mapsvg = d3.select( "#vanmap" )
     .append( "svg" )
     .attr( "width", width )
     .attr( "height", height );
-  
-  var tooltip = d3.select("#vanmap").append('svg')
+
+  var tooltip = d3.select("body").append('div')
     .attr("class", "hidden tooltip");
 
   // Projection
@@ -78,18 +78,17 @@ function plotmap(world,data){
     .attr("class",d=>d.properties.name)
     .attr('fill', "purple")
     .attr('fill-opacity',opacity_set)
-	
+
 	// Tooltip on mouse over area
 	.on("mousemove", function(d)
 	{
 		var mouse = d3.mouse(mapsvg.node()).map(function(d) {
 			return parseInt(d);
 		})
-		
+
 		tooltip.classed("hidden", false)
-			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[0] + 15) + "px")
-			.text(d.properties.name);
-			// console.log(d.properties.name);
+			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 15) + "px")
+      .text(d.properties.name);
 	})
 	.on("mouseout", function()
 	{
