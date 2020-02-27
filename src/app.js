@@ -94,6 +94,12 @@ function plotmap(world,data){
 	{
 		tooltip.classed("hidden", true);
 	});
+	
+	// Listen to the slider
+	d3.select("#mySlider").on("change", function(d){
+		// Recover slide value
+	    selectedValue = this.value
+	})
 
     function opacity_set(d){
       for ( let i = 0; i < 22; i++){
