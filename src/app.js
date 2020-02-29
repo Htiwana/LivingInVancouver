@@ -65,7 +65,10 @@ function priceaccessor(error,data){
     }
 }
 
+var dataglobal;
 function splitwork(data,map){
+  dataglobal = data;
+  console.log(dataglobal);
   //plotbars(data);
   plotmap(map,data);
 }
@@ -161,7 +164,7 @@ function plotmap(world,data){
     function price_opacity(d){
       for ( let i = 0; i < 22; i++){
         if(data[i].area == d.properties.name){
-          console.log(data[i].price2001);
+          //console.log(data[i].price2001);
           return "" + (((data[i].price2001)/880000))
         }
       }
@@ -232,7 +235,7 @@ function plotpricemap(world,data){
     function price_opacity(d){
       for ( let i = 0; i < 22; i++){
         if(data[i].area == d.properties.name){
-          console.log(data[i].price2001);
+          //console.log(data[i].price2001);
           return "" + (((data[i].price2001)/880000))
         }
       }
