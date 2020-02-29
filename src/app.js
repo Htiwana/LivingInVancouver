@@ -139,18 +139,12 @@ function plotmap(world,data){
 
 		tooltip.classed("hidden", false)
 			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 15) + "px")
-            .text(d.properties.name);
+            .html(d.properties.name + "<br/>" + data.pop2001);
 	})
 	.on("mouseout", function()
 	{
 		tooltip.classed("hidden", true);
 	});
-
-	// Listen to the slider
-	d3.select("#mySlider").on("change", function(d){
-		// Recover slide value
-	    selectedValue = this.value
-	})
 
     function pop_opacity(d){
       for ( let i = 0; i < 22; i++){
@@ -210,7 +204,7 @@ function plotpricemap(world,data){
 
 		tooltip.classed("hidden", false)
 			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 650) + "px")// EXTREMELY HACKY Y COORD FIX
-            .text(d.properties.name);
+            .html(d.properties.name + "<br/>" + data.price2001);
 	})
 	.on("mouseout", function()
 	{
@@ -241,3 +235,42 @@ function plotpricemap(world,data){
       }
     }
 }
+// Options for dropdown
+var listOptions = ["Population", "Price"]
+
+// Init button
+var dropdownButton = d3.select("#dropdown")
+	.append("select")
+	
+// Add options to button
+dropdownButton // Add a button
+  .selectAll('Options') // Next 4 lines add 6 options = 6 colors
+ 	.data(listOptions)
+  .enter()
+	.append('option')
+  .text(function (d) { return d; }) // text showed in the menu
+  .attr("value", function (d) { return d; }) // value returned is one of the items in the list
+
+ dropdownButton.on("change", function(d)
+ {
+	var selectedOption = d3.select(this).property("value")
+	updateMap(selectedOption)
+	// console.log(selectedOption)
+ })
+ 
+ function updateMap(updatOption)
+ {
+	 if (updatOption.localeCompare("Price") == 0)
+	 {
+		 console.log("Chose Price")
+		 // d3.csv("../data/realdata.csv", real_parser, priceaccessor)
+	 }
+	 else {
+		 console.log("Chose Population")
+		 // d3.csv("../data/realdata.csv", real_parser, accessor)
+	 }
+	 // mapsvg
+	   // .transition()
+	   // .duration(1000)
+ }
+
