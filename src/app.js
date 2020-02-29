@@ -3,7 +3,7 @@ var svgWidth = 400, svgHeight = 300, barPadding = 2, scale=svgHeight;
 
 
 d3.csv("../data/simpledat.csv", conversor, accessor)
-
+d3.csv("../data/realdata.csv", realconversor, accessor)
 
 
 function conversor(d){
@@ -12,6 +12,15 @@ function conversor(d){
       area: d.area,
       pop: parseInt(d.pop.replace(",","")),
       potatoes: +d.potatoes
+    };
+}
+
+function realconversor(d){
+
+    return {
+      // area: d.area,
+      // pop: parseInt(d.pop.replace(",","")),
+      // potatoes: +d.potatoes
     };
 }
 
@@ -94,7 +103,7 @@ function plotmap(world,data){
 	{
 		tooltip.classed("hidden", true);
 	});
-	
+
 	// Listen to the slider
 	d3.select("#mySlider").on("change", function(d){
 		// Recover slide value
