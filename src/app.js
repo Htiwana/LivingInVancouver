@@ -139,12 +139,22 @@ function plotmap(world,data){
 
 		tooltip.classed("hidden", false)
 			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 15) + "px")
-            .html(d.properties.name + "<br/>" + data.pop2001);
+            .html(d.properties.name + "<br/>" + population_tooltip(d));
 	})
 	.on("mouseout", function()
 	{
 		tooltip.classed("hidden", true);
 	});
+	
+	function population_tooltip(d){
+      for ( let i = 0; i < 22; i++){
+        if(data[i].area == d.properties.name){
+		  value = (data[i].pop2001)
+		  // console.log(value)
+          return value
+        }
+      }
+    }
 
     function pop_opacity(d){
       for ( let i = 0; i < 22; i++){
@@ -204,18 +214,24 @@ function plotpricemap(world,data){
 
 		tooltip.classed("hidden", false)
 			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 650) + "px")// EXTREMELY HACKY Y COORD FIX
-            .html(d.properties.name + "<br/>" + data.price2001);
+            // .html(d.properties.name + "<br/>" + "<img src=http://charlesperin.net/images/charles_perin_7_5.5-4.jpg>");
+			.html(d.properties.name + "<br/>" + price_tooltip(d));
+
 	})
 	.on("mouseout", function()
 	{
 		tooltip.classed("hidden", true);
 	});
-
-	// Listen to the slider
-	d3.select("#mySlider").on("change", function(d){
-		// Recover slide value
-	    selectedValue = this.value
-	})
+	
+	function price_tooltip(d){
+      for ( let i = 0; i < 22; i++){
+        if(data[i].area == d.properties.name){
+		  value = (data[i].price2001)
+		  // console.log(value)
+          return value
+        }
+      }
+    }
 
     function pop_opacity(d){
       for ( let i = 0; i < 22; i++){
