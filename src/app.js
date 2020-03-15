@@ -69,6 +69,7 @@ var dataglobal;
 function splitwork(data,map){
   dataglobal = data;
   console.log(dataglobal);
+  console.log(map);
   //plotbars(data);
   plotmap(map,data);
 }
@@ -103,7 +104,7 @@ function plotbars(data){
 
 
 function plotmap(world,data){
-  //console.log(world)
+  // console.log(world)
   var width = 900,height = 600;
 
   var mapsvg = d3.select( "#vanmap" )
@@ -148,9 +149,12 @@ function plotmap(world,data){
 	
 	function population_tooltip(d){
       for ( let i = 0; i < 22; i++){
-        if(data[i].area == d.properties.name){
-		  value = (data[i].pop2001)
-		  // console.log(value)
+		var dataset1 = data[i].area.replace("-", " ")
+		var dataset2 = d.properties.name.replace("-"," ")
+		  
+        if((dataset1) == (dataset2))
+		{
+		  value = (data[i].price2001)
           return value
         }
       }
@@ -178,7 +182,7 @@ function plotmap(world,data){
 }
 
 function plotpricemap(world,data){
-  //console.log(world)
+  // console.log(world)
   var width = 900,height = 600;
 
   var mapsvg = d3.select( "body" )
@@ -214,20 +218,26 @@ function plotpricemap(world,data){
 
 		tooltip.classed("hidden", false)
 			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 650) + "px")// EXTREMELY HACKY Y COORD FIX
-            // .html(d.properties.name + "<br/>" + "<img src=http://charlesperin.net/images/charles_perin_7_5.5-4.jpg>");
+            // .html(d.properties.name + "<br/>" + "<img src=http://charlesperin.net/images/charles_perin_7_5.5-4.jpg>")
 			.html(d.properties.name + "<br/>" + price_tooltip(d));
-
 	})
 	.on("mouseout", function()
 	{
 		tooltip.classed("hidden", true);
 	});
 	
+    // Function fixes the issue with different naming conventions for both datasets
 	function price_tooltip(d){
       for ( let i = 0; i < 22; i++){
-        if(data[i].area == d.properties.name){
+		var dataset1 = data[i].area.replace("-", " ")
+		var dataset2 = d.properties.name.replace("-"," ")
+
+        // console.log("data is", temp1)
+        // console.log("properties is", d.properties.name)
+		  
+        if((dataset1) == (dataset2))
+		{
 		  value = (data[i].price2001)
-		  // console.log(value)
           return value
         }
       }
