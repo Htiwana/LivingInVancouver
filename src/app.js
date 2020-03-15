@@ -140,7 +140,7 @@ function plotmap(world,data){
 
 		tooltip.classed("hidden", false)
 			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 15) + "px")
-            .html(d.properties.name + "<br/>" + population_tooltip(d));
+            .html(d.properties.name + "<br/>" + "<b>Population: </b>" + population_tooltip(d));
 	})
 	.on("mouseout", function()
 	{
@@ -219,7 +219,7 @@ function plotpricemap(world,data){
 		tooltip.classed("hidden", false)
 			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 650) + "px")// EXTREMELY HACKY Y COORD FIX
             // .html(d.properties.name + "<br/>" + "<img src=http://charlesperin.net/images/charles_perin_7_5.5-4.jpg>")
-			.html(d.properties.name + "<br/>" + price_tooltip(d));
+			.html(d.properties.name + "<br/>" + "<b>Price: </b>" + price_tooltip(d));
 	})
 	.on("mouseout", function()
 	{
