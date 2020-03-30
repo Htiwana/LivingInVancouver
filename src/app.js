@@ -176,9 +176,14 @@ function plotmap(world,data){
 
     function price_opacity(d){
       for ( let i = 0; i < 22; i++){
-        if(data[i].area == d.properties.name){
+        var dataset1 = data[i].area.replace("-", " ")
+    		var dataset2 = d.properties.name.replace("-"," ")
+
+        if(dataset1 == dataset2){
           //console.log(data[i].price2001);
           return "" + (((data[i].price2001)/880000))
+        }else if(i == 21){
+          return "0";
         }
       }
     }
@@ -247,20 +252,16 @@ function plotpricemap(world,data){
       }
     }
 
-    function pop_opacity(d){
-      for ( let i = 0; i < 22; i++){
-        if(data[i].area == d.properties.name){
-          //console.log(data[i].pop2001);
-          return "" + (((data[i].pop2001)/38000))
-        }
-      }
-    }
-
     function price_opacity(d){
       for ( let i = 0; i < 22; i++){
-        if(data[i].area == d.properties.name){
+        var dataset1 = data[i].area.replace("-", " ")
+    		var dataset2 = d.properties.name.replace("-"," ")
+
+        if(dataset1 == dataset2){
           //console.log(data[i].price2001);
           return "" + (((data[i].price2001)/880000))
+        }else if(i == 21){
+          return "0";
         }
       }
     }
