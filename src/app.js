@@ -37,7 +37,7 @@ function accessor(error,data){
       if(error){
         console.log(error);
       }else{
-        d3.json("../data/van.json", map)
+        d3.json("../data/van1.json", map)
         function map(err, world)
         {
           if(err){
@@ -53,7 +53,7 @@ function priceaccessor(error,data){
       if(error){
         console.log(error);
       }else{
-        d3.json("../data/van.json", map)
+        d3.json("../data/van1.json", map)
         function map(err, world)
         {
           if(err){
@@ -146,12 +146,12 @@ function plotmap(world,data){
 	{
 		tooltip.classed("hidden", true);
 	});
-	
+
 	function population_tooltip(d){
       for ( let i = 0; i < 22; i++){
 		var dataset1 = data[i].area.replace("-", " ")
 		var dataset2 = d.properties.name.replace("-"," ")
-		  
+
         if((dataset1) == (dataset2))
 		{
 		  value = (data[i].price2001)
@@ -224,7 +224,7 @@ function plotpricemap(world,data){
 	{
 		tooltip.classed("hidden", true);
 	});
-	
+
     // Function fixes the issue with different naming conventions for both datasets
 	function price_tooltip(d){
       for ( let i = 0; i < 22; i++){
@@ -233,7 +233,7 @@ function plotpricemap(world,data){
 
         // console.log("data is", temp1)
         // console.log("properties is", d.properties.name)
-		  
+
         if((dataset1) == (dataset2))
 		{
 		  value = (data[i].price2001)
@@ -266,7 +266,7 @@ var listOptions = ["Population", "Price"]
 // Init button
 var dropdownButton = d3.select("#dropdown")
 	.append("select")
-	
+
 // Add options to button
 dropdownButton // Add a button
   .selectAll('Options') // Next 4 lines add 6 options = 6 colors
@@ -282,7 +282,7 @@ dropdownButton // Add a button
 	updateMap(selectedOption)
 	// console.log(selectedOption)
  })
- 
+
  function updateMap(updatOption)
  {
 	 if (updatOption.localeCompare("Price") == 0)
@@ -297,4 +297,3 @@ dropdownButton // Add a button
 		 d3.csv("../data/realdata.csv", real_parser, accessor)
 	 }
  }
-
