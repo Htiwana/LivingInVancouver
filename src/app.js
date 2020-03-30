@@ -140,7 +140,7 @@ function plotmap(world,data){
 
 		tooltip.classed("hidden", false)
 			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 15) + "px")
-            .html(d.properties.name + "<br/>" + "<b>Population: </b>" + population_tooltip(d) + "<br/>" + "<img src=https://cartocdn-gusc.global.ssl.fastly.net/vadimmarusin/api/v1/map/vadimmarusin@4fe53f5a@f8498f1d75c31bf8b0635194ec4bee7a:1544837817179/1/11/323/700.png>");
+            .html(d.properties.name + "<br/>" + "<b>Price: </b>" + population_tooltip(d) + "<br/>" + "<img src=https://cartocdn-gusc.global.ssl.fastly.net/vadimmarusin/api/v1/map/vadimmarusin@4fe53f5a@f8498f1d75c31bf8b0635194ec4bee7a:1544837817179/1/11/323/700.png>");
 	})
 	.on("mouseout", function()
 	{
@@ -152,19 +152,24 @@ function plotmap(world,data){
 		var dataset1 = data[i].area.replace("-", " ")
 		var dataset2 = d.properties.name.replace("-"," ")
 
-        if((dataset1) == (dataset2))
-		{
-		  value = (data[i].price2001)
-          return value
+        if((dataset1) == (dataset2)){
+		        value = (data[i].price2001)
+            return value
         }
+
       }
     }
 
     function pop_opacity(d){
       for ( let i = 0; i < 22; i++){
-        if(data[i].area == d.properties.name){
+        var dataset1 = data[i].area.replace("-", " ")
+    		var dataset2 = d.properties.name.replace("-"," ")
+
+        if(dataset1 == dataset2){
           //console.log(data[i].pop2001);
           return "" + (((data[i].pop2001)/38000))
+        }else if(i == 21){
+          return "0";
         }
       }
     }
