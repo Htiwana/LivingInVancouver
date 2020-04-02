@@ -13,6 +13,17 @@ h1
 	font-weight: 100;
 	color: #005DAA; /* offical UK Kentucky blue */
 	padding-left: 10px;
+	font-weight: bold;
+}
+
+h2
+{
+	font-family: "Proxima Nova", Montserrat, sans-serif;
+	font-size: 2em;
+	font-weight: 100;
+	color: #005DAA;
+	padding-left: 10px;
+	text-align: center;
 }
 
 path
@@ -48,8 +59,9 @@ div.tooltip
 	padding-left: 10px;
 }
 
-input
+#mySlider
 {
-	display: inline-block;
-	vertical-align: middle;
+	change display: block;
+	on display: inline-block;
+	width: 35%; /* Full-width */
 }

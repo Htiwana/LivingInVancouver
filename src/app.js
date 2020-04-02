@@ -308,12 +308,26 @@ function updateMap(updatOption)
  // Sliders
 d3.select("#mySlider").on("change", function(d)
 {
-	selectedValue = this.value
+	selectedValue = this.value //recovers slider value
+	// console.log(selectedValue)
 	changeYear(selectedValue)
 })
 
-function changeYear()
+function changeYear(year)
 {
-	console.log("Chose year")
+	if (year == 1)
+	{
+		document.getElementById("h2").innerHTML = "2001";
+		console.log("Chose year 2001")
+	}
+	else if (year == 2)
+	{
+		document.getElementById("h2").innerHTML = "2006";
+		console.log("Chose year 2006")
+	}
+	else {
+		document.getElementById("h2").innerHTML = "2016";
+		console.log("Chose year 2016")
+	}
 }
  
