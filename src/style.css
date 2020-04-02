@@ -22,8 +22,10 @@ h2
 	font-size: 2em;
 	font-weight: 100;
 	color: #005DAA;
-	padding-left: 10px;
-	text-align: center;
+	/* text-align: center; */
+	display: block;
+	display: inline-block;
+	margin-left: 26%;
 }
 
 path
@@ -56,12 +58,14 @@ div.tooltip
 
 #dropdown
 {
+	display: block;
+	display: inline-block;
 	padding-left: 10px;
 }
 
 #mySlider
 {
-	change display: block;
-	on display: inline-block;
+/* 	display: block;
+	display: inline-block; */
 	width: 35%; /* Full-width */
 }
