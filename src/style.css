@@ -12,6 +12,7 @@ h1
 	font-size: 2em;
 	font-weight: 100;
 	color: #005DAA; /* offical UK Kentucky blue */
+	padding-left: 10px;
 }
 
 path
@@ -23,8 +24,8 @@ path
 path:hover
 {
 	opacity: 0.85;
-  stroke: red;
-  stroke-width: 2px;
+	stroke: red;
+	stroke-width: 2px;
 }
 
 .hidden {
@@ -40,4 +41,15 @@ div.tooltip
 	border-radius: 2px;
 	opacity: 0.9;
 	position: absolute;
+}
+
+#dropdown
+{
+	padding-left: 10px;
+}
+
+input
+{
+	display: inline-block;
+	vertical-align: middle;
 }

@@ -140,7 +140,7 @@ function plotmap(world,data){
 
 		tooltip.classed("hidden", false)
 			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 15) + "px")
-            .html(d.properties.name + "<br/>" + "<b>Price: </b>" + population_tooltip(d) + "<br/>" + "<img src=https://cartocdn-gusc.global.ssl.fastly.net/vadimmarusin/api/v1/map/vadimmarusin@4fe53f5a@f8498f1d75c31bf8b0635194ec4bee7a:1544837817179/1/11/323/700.png>");
+            .html(d.properties.name + "<br/>" + "<b>Population: </b>" + population_tooltip(d) + "<br/>" + "<img src=https://cartocdn-gusc.global.ssl.fastly.net/vadimmarusin/api/v1/map/vadimmarusin@4fe53f5a@f8498f1d75c31bf8b0635194ec4bee7a:1544837817179/1/11/323/700.png>");
 	})
 	.on("mouseout", function()
 	{
@@ -153,7 +153,7 @@ function plotmap(world,data){
 		var dataset2 = d.properties.name.replace("-"," ")
 
         if((dataset1) == (dataset2)){
-		        value = (data[i].price2001)
+		        value = (data[i].pop2001)
             return value
         }
 
@@ -228,7 +228,7 @@ function plotpricemap(world,data){
 
 		tooltip.classed("hidden", false)
 			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 15) + "px")
-			.html(d.properties.name + "<br/>" + "<b>Price: </b>" + price_tooltip(d) + "<br/>" + "<img src=https://t1.transitdb.ca/1.0.0/t1/11/323/1347.png>");
+			.html(d.properties.name + "<br/>" + "<b>Market Value: $</b>" + price_tooltip(d) + "<br/>" + "<img src=https://t1.transitdb.ca/1.0.0/t1/11/323/1347.png>");
 	})
 	.on("mouseout", function()
 	{
@@ -267,7 +267,7 @@ function plotpricemap(world,data){
     }
 }
 // Options for dropdown
-var listOptions = ["Population", "Price"]
+var listOptions = ["Population", "Market Value"]
 
 // Init button
 var dropdownButton = d3.select("#dropdown")
@@ -275,13 +275,14 @@ var dropdownButton = d3.select("#dropdown")
 
 // Add options to button
 dropdownButton // Add a button
-  .selectAll('Options') // Next 4 lines add 6 options = 6 colors
+  .selectAll('Options')
  	.data(listOptions)
   .enter()
 	.append('option')
   .text(function (d) { return d; }) // text showed in the menu
   .attr("value", function (d) { return d; }) // value returned is one of the items in the list
 
+ // Listens for the change
  dropdownButton.on("change", function(d)
  {
 	var selectedOption = d3.select(this).property("value")
@@ -289,17 +290,30 @@ dropdownButton // Add a button
 	// console.log(selectedOption)
  })
 
- function updateMap(updatOption)
+function updateMap(updatOption)
+{
+ if (updatOption.localeCompare("Market Value") == 0)
  {
-	 if (updatOption.localeCompare("Price") == 0)
-	 {
-		 console.log("Chose Price")
-         d3.select("svg").remove()
-		 d3.csv("../data/realdata.csv", real_parser, priceaccessor)
-	 }
-	 else {
-		 console.log("Chose Population")
-         d3.select("svg").remove()
-		 d3.csv("../data/realdata.csv", real_parser, accessor)
-	 }
+	 // console.log("Chose Price")
+	 d3.select("svg").remove()
+	 d3.csv("../data/realdata.csv", real_parser, priceaccessor)
  }
+ else {
+	 // console.log("Chose Population")
+	 d3.select("svg").remove()
+	 d3.csv("../data/realdata.csv", real_parser, accessor)
+ }
+}
+ 
+ // Sliders
+d3.select("#mySlider").on("change", function(d)
+{
+	selectedValue = this.value
+	changeYear(selectedValue)
+})
+
+function changeYear()
+{
+	console.log("Chose year")
+}
+ 
