@@ -25,7 +25,7 @@ h2
 	/* text-align: center; */
 	display: block;
 	display: inline-block;
-	margin-left: 26%;
+	padding-left: 10px;
 }
 
 path
@@ -65,7 +65,5 @@ div.tooltip
 
 #mySlider
 {
-/* 	display: block;
-	display: inline-block; */
-	width: 35%; /* Full-width */
+	width: 35%;
 }
