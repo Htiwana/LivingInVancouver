@@ -1,6 +1,7 @@
 
 var svgWidth = 400, svgHeight = 300, barPadding = 2, scale=svgHeight;
-
+var dataglobal;
+var worldglobal;
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
 d3.csv("../data/realdata.csv", real_parser, accessor)
@@ -43,7 +44,9 @@ function accessor(error,data){
           if(err){
             console.log(err)
           }else{
-            splitwork(data,world);
+            dataglobal = data;
+            worldglobal = world;
+            //plotmap("pop","2001");
           }
         }
     }
@@ -65,13 +68,14 @@ function priceaccessor(error,data){
     }
 }
 
-var dataglobal;
+
 function splitwork(data,map){
   dataglobal = data;
+  worldglobal = map;
   console.log(dataglobal);
   console.log(map);
   //plotbars(data);
-  plotmap(map,data);
+  plotmap("pop","2001");
 }
 
 function plotbars(data){
@@ -103,8 +107,17 @@ function plotbars(data){
 }
 
 
-function plotmap(world,data){
-  // console.log(world)
+
+function plotmap(dimension,year){
+  d3.select("svg").remove();
+
+  var dim = dimension+year;
+  let dimension_data = dataglobal.map(d => d[dim]);
+  let dim_data = dimension_data.slice(0,-2);//removes values for entire city/area of vancouver
+  var dim_max = Math.max(...dim_data);
+  var dim_min = Math.min(...dimension_data);
+  var dim_range = dim_max - dim_min;
+
   var width = 900,height = 600;
 
   var mapsvg = d3.select( "#vanmap" )
@@ -116,156 +129,57 @@ function plotmap(world,data){
     .attr("class", "hidden tooltip");
 
   // Projection
-  var projection = d3.geoMercator().fitExtent([[10, 10], [800 - 10, 600 - 10]], world)
+  var projection = d3.geoMercator().fitExtent([[10, 10], [800 - 10, 600 - 10]], worldglobal)
 
   var geoPath = d3.geoPath()
     .projection(projection);
 
   var areas = mapsvg.append("g")
     .selectAll("path")
-    .data(world.features)
+    .data(worldglobal.features)
     .enter()
     .append("path")
     .attr( "d", geoPath )
     .attr("class",d=>d.properties.name)
     .attr('fill', "#0f4c75")
-    .attr('fill-opacity',pop_opacity)
+    .attr('fill-opacity',set_opacity)
+    .on("mousemove", draw_tooltip)
+	  .on("mouseout", () =>	tooltip.classed("hidden", true));
 
-	// Tooltip on mouse over area
-	.on("mousemove", function(d)
-	{
-		var mouse = d3.mouse(mapsvg.node()).map(function(d) {
-			return parseInt(d);
-		})
+  function draw_tooltip(d)
+  {
+    var mouse = d3.mouse(mapsvg.node()).map( d => parseInt(d) )
+    tooltip.classed("hidden", false)
+      .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 10) + "px")
+            .html(d.properties.name + "<br/>" + "<b>Population: </b>" + get_value(d) + "<br/>" + "<img src=https://cartocdn-gusc.global.ssl.fastly.net/vadimmarusin/api/v1/map/vadimmarusin@4fe53f5a@f8498f1d75c31bf8b0635194ec4bee7a:1544837817179/1/11/323/700.png>");
+  }
 
-		tooltip.classed("hidden", false)
-			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 15) + "px")
-            .html(d.properties.name + "<br/>" + "<b>Population: </b>" + population_tooltip(d) + "<br/>" + "<img src=https://cartocdn-gusc.global.ssl.fastly.net/vadimmarusin/api/v1/map/vadimmarusin@4fe53f5a@f8498f1d75c31bf8b0635194ec4bee7a:1544837817179/1/11/323/700.png>");
-	})
-	.on("mouseout", function()
-	{
-		tooltip.classed("hidden", true);
-	});
-
-	function population_tooltip(d){
-      for ( let i = 0; i < 22; i++){
-		var dataset1 = data[i].area.replace("-", " ")
-		var dataset2 = d.properties.name.replace("-"," ")
-
+  function get_value(d){
+    for ( let i = 0; i < 22; i++){
+      var dataset1 = dataglobal[i].area.replace("-", " ")
+      var dataset2 = d.properties.name.replace("-"," ")
         if((dataset1) == (dataset2)){
-		        value = (data[i].pop2001)
+            value = dimension_data[i]
             return value
         }
-
-      }
     }
+  }
 
-    function pop_opacity(d){
+    function set_opacity(d){
       for ( let i = 0; i < 22; i++){
-        var dataset1 = data[i].area.replace("-", " ")
-    		var dataset2 = d.properties.name.replace("-"," ")
-
-        if(dataset1 == dataset2){
-          //console.log(data[i].pop2001);
-          return "" + (((data[i].pop2001)/38000))
-        }else if(i == 21){
-          return "0";
+          var dataset1 = dataglobal[i].area.replace("-", " ")
+      		var dataset2 = d.properties.name.replace("-"," ")
+            if(dataset1 == dataset2){
+              //console.log(dim_range);
+              return "" + (((dimension_data[i]/dim_range)))
+            }else if(i == 21){
+              return "0";
+            }
         }
       }
-    }
-
-    function price_opacity(d){
-      for ( let i = 0; i < 22; i++){
-        var dataset1 = data[i].area.replace("-", " ")
-    		var dataset2 = d.properties.name.replace("-"," ")
-
-        if(dataset1 == dataset2){
-          //console.log(data[i].price2001);
-          return "" + (((data[i].price2001)/880000))
-        }else if(i == 21){
-          return "0";
-        }
-      }
-    }
-
-
 }
 
-function plotpricemap(world,data){
-  // console.log(world)
-  var width = 900,height = 600;
 
-  var mapsvg = d3.select( "body" )
-    .append( "svg" )
-    .attr( "width", width )
-    .attr( "height", height );
-
-  var tooltip = d3.select("body").append('div')
-    .attr("class", "hidden tooltip");
-
-  // Projection
-  var projection = d3.geoMercator().fitExtent([[10, 10], [800 - 10, 600 - 10]], world)
-
-  var geoPath = d3.geoPath()
-    .projection(projection);
-
-  var areas = mapsvg.append("g")
-    .selectAll("path")
-    .data(world.features)
-    .enter()
-    .append("path")
-    .attr( "d", geoPath )
-    .attr("class",d=>d.properties.name)
-    .attr('fill', "#0f4c75")
-    .attr('fill-opacity',price_opacity)
-
-	// Tooltip on mouse over area
-	.on("mousemove", function(d)
-	{
-		var mouse = d3.mouse(mapsvg.node()).map(function(d) {
-			return parseInt(d);
-		})
-
-		tooltip.classed("hidden", false)
-			.attr("style", "left: " + (mouse[0] + 15) + "px; top:" + (mouse[1] + 15) + "px")
-			.html(d.properties.name + "<br/>" + "<b>Market Value: $</b>" + price_tooltip(d) + "<br/>" + "<img src=https://t1.transitdb.ca/1.0.0/t1/11/323/1347.png>");
-	})
-	.on("mouseout", function()
-	{
-		tooltip.classed("hidden", true);
-	});
-
-    // Function fixes the issue with different naming conventions for both datasets
-	function price_tooltip(d){
-      for ( let i = 0; i < 22; i++){
-		var dataset1 = data[i].area.replace("-", " ")
-		var dataset2 = d.properties.name.replace("-"," ")
-
-        // console.log("data is", temp1)
-        // console.log("properties is", d.properties.name)
-
-        if((dataset1) == (dataset2))
-		{
-		  value = (data[i].price2001)
-          return value
-        }
-      }
-    }
-
-    function price_opacity(d){
-      for ( let i = 0; i < 22; i++){
-        var dataset1 = data[i].area.replace("-", " ")
-    		var dataset2 = d.properties.name.replace("-"," ")
-
-        if(dataset1 == dataset2){
-          //console.log(data[i].price2001);
-          return "" + (((data[i].price2001)/880000))
-        }else if(i == 21){
-          return "0";
-        }
-      }
-    }
-}
 // Options for dropdown
 var listOptions = ["Population", "Market Value"]
 
@@ -294,17 +208,13 @@ function updateMap(updatOption)
 {
  if (updatOption.localeCompare("Market Value") == 0)
  {
-	 // console.log("Chose Price")
-	 d3.select("svg").remove()
-	 d3.csv("../data/realdata.csv", real_parser, priceaccessor)
+	 plotmap("price","2001");
  }
  else {
-	 // console.log("Chose Population")
-	 d3.select("svg").remove()
-	 d3.csv("../data/realdata.csv", real_parser, accessor)
+   plotmap("pop","2001");
  }
 }
- 
+
  // Sliders
 d3.select("#mySlider").on("change", function(d)
 {
@@ -330,4 +240,3 @@ function changeYear(year)
 		console.log("Chose year 2016")
 	}
 }
- 
