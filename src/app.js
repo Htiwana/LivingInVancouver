@@ -3,6 +3,7 @@ var svgWidth = 400, svgHeight = 300, barPadding = 2, scale=svgHeight;
 var dataglobal;
 var worldglobal;
 var yearglobal = "2001";
+var dimensionglobal = "pop";
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
 d3.csv("../data/realdata.csv", real_parser, accessor)
@@ -24,12 +25,13 @@ function makeNumber(d){
 }
 
 function real_parser(d){
+
     console.log(d);
     //var trait = "AverageValueofDwelling2001";
     var population2001 = makeNumber(d.TotalPop2001);
     var price2001 = makeNumber(d.AverageValueofDwelling2001);
     var population2006 = makeNumber(d.TotalPop2006);
-    var price2006 = makeNumber(d.AverageValueofDwelling2001);
+    let price2006 = makeNumber(d.AverageValueofDwelling2001);
     return {
       area: d.area,
       pop2001: population2001,
@@ -90,11 +92,11 @@ function plotbars(data){
 
 
 
-function plotmap(dimension,year){
+function plotmap(){
   d3.select("svg").remove();
 
-  console.log("drawing map for " + dimension + year );
-  var dim = dimension+year;
+  console.log("drawing map for " + dimensionglobal + yearglobal );
+  var dim = dimensionglobal+yearglobal;
   let dimension_data = dataglobal.map(d => d[dim]);
   let dim_data = dimension_data.slice(0,-2);//removes values for entire city/area of vancouver
   var dim_max = Math.max(...dim_data);
@@ -193,10 +195,12 @@ function updateMap(updatOption)
 {
  if (updatOption.localeCompare("Market Value") == 0)
  {
-	 plotmap("price",yearglobal);
+   dimensionglobal = "price"
+	 plotmap();
  }
  else {
-   plotmap("pop",yearglobal);
+   dimensionglobal = "pop"
+   plotmap();
  }
 }
 
@@ -206,6 +210,7 @@ d3.select("#mySlider").on("change", function(d)
 	selectedValue = this.value //recovers slider value
 	// console.log(selectedValue)
 	changeYear(selectedValue)
+  plotmap();
 })
 
 function changeYear(year)
@@ -215,6 +220,7 @@ function changeYear(year)
 		document.getElementById("h2").innerHTML = "2001";
 		console.log("Chose year 2001")
     yearglobal = "2001";
+    plotmap();
 	}
 	else if (year == 2)
 	{
@@ -226,5 +232,6 @@ function changeYear(year)
 		document.getElementById("h2").innerHTML = "2016";
 		console.log("Chose year 2016")
     yearglobal = "2016"
+    plotmap();
 	}
 }
