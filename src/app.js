@@ -45,6 +45,7 @@ function accessor(error,data){
           }else{
             dataglobal = data;
             worldglobal = world;
+            plotmap();
           }
         }
     }
