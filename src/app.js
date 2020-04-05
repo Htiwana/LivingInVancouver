@@ -18,20 +18,8 @@ function parser(d){
     };
 }
 
-function makeNumber(d){
-  d = d.replace(",","");
-  d = d.replace("$","");
-  return parseInt(d);
-}
-
 function real_parser(d){
-
-    console.log(d);
-    //var trait = "AverageValueofDwelling2001";
-    // var population2001 = makeNumber(d.TotalPop2001);
-    // var price2001 = makeNumber(d.AverageValueofDwelling2001);
-    // var population2006 = makeNumber(d.TotalPop2006);
-    //let price2006 = makeNumber(d.AverageValueofDwelling2001);
+    //console.log(d);
     return {
       area: d.area,
       pop2001: +d.TotalPop2001,
@@ -49,7 +37,7 @@ function accessor(error,data){
       if(error){
         console.log(error);
       }else{
-        d3.json("../data/van1.json", map)
+        d3.json("../data/van-noestdt.json", map)
         function map(err, world)
         {
           if(err){
