@@ -6,7 +6,7 @@ var yearglobal = "2001";
 var dimensionglobal = "pop";
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
-d3.csv("../data/realdata.csv", real_parser, accessor)
+d3.csv("../data/realdatat.csv", real_parser, accessor)
 //d3.csv("../data/realdata.csv", real_parser, priceaccessor)
 
 function parser(d){
@@ -28,18 +28,18 @@ function real_parser(d){
 
     console.log(d);
     //var trait = "AverageValueofDwelling2001";
-    var population2001 = makeNumber(d.TotalPop2001);
-    var price2001 = makeNumber(d.AverageValueofDwelling2001);
-    var population2006 = makeNumber(d.TotalPop2006);
-    let price2006 = makeNumber(d.AverageValueofDwelling2001);
+    // var population2001 = makeNumber(d.TotalPop2001);
+    // var price2001 = makeNumber(d.AverageValueofDwelling2001);
+    // var population2006 = makeNumber(d.TotalPop2006);
+    //let price2006 = makeNumber(d.AverageValueofDwelling2001);
     return {
       area: d.area,
-      pop2001: population2001,
-      price2001: price2001,
-      pop2006: population2006,
-      price2006: price2006,
-      pop2016: population2006,
-      price2016: price2006
+      pop2001: +d.TotalPop2001,
+      price2001: +d.AverageValueofDwelling2001,
+      pop2006: +d.TotalPop2006,
+      price2006: +d.AverageValueofDwelling2006,
+      pop2016: +d.TotalPop2016,
+      price2016: +d.AverageValueofDwelling2016,
     };
 }
 
@@ -220,7 +220,6 @@ function changeYear(year)
 		document.getElementById("h2").innerHTML = "2001";
 		console.log("Chose year 2001")
     yearglobal = "2001";
-    plotmap();
 	}
 	else if (year == 2)
 	{
@@ -232,6 +231,5 @@ function changeYear(year)
 		document.getElementById("h2").innerHTML = "2016";
 		console.log("Chose year 2016")
     yearglobal = "2016"
-    plotmap();
 	}
 }
