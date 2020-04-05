@@ -194,13 +194,13 @@ function updateMap(updatOption)
 }
 
  // Sliders
-d3.select("#mySlider").on("change", function(d)
-{
-	selectedValue = this.value //recovers slider value
-	// console.log(selectedValue)
-	changeYear(selectedValue)
-	plotmap();
-})
+// d3.select("#mySlider").on("change", function(d)
+// {
+	// selectedValue = this.value //recovers slider value
+	// // console.log(selectedValue)
+	// changeYear(selectedValue)
+	// plotmap();
+// })
 
 function changeYear(year)
 {
