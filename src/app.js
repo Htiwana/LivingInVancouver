@@ -199,26 +199,27 @@ d3.select("#mySlider").on("change", function(d)
 	selectedValue = this.value //recovers slider value
 	// console.log(selectedValue)
 	changeYear(selectedValue)
-  plotmap();
+	plotmap();
 })
 
 function changeYear(year)
 {
-	if (year == 1)
+	if (year == 2001)
 	{
 		document.getElementById("h2").innerHTML = "2001";
 		console.log("Chose year 2001")
-    yearglobal = "2001";
+		yearglobal = "2001";
 	}
-	else if (year == 2)
+	else if (year == 2006)
 	{
 		document.getElementById("h2").innerHTML = "2006";
 		console.log("Chose year 2006")
-    yearglobal = "2006";
+		yearglobal = "2006";
 	}
 	else {
 		document.getElementById("h2").innerHTML = "2016";
 		console.log("Chose year 2016")
-    yearglobal = "2016"
+		yearglobal = "2016";
 	}
+	plotmap();
 }
