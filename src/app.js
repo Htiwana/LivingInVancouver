@@ -2,6 +2,7 @@
 var svgWidth = 400, svgHeight = 300, barPadding = 2, scale=svgHeight;
 var dataglobal;
 var worldglobal;
+var yearglobal = "2001";
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
 d3.csv("../data/realdata.csv", real_parser, accessor)
@@ -16,23 +17,31 @@ function parser(d){
     };
 }
 
-function real_parser(d){
-    //console.log(d);
-    var trait = "AverageValueofDwelling2001";
-    var population2001 = makeNumber(d.TotalPop2001);
-    var price2001 = makeNumber(d[trait]);
-    return {
-      area: d.area,
-      pop2001: population2001,
-      price2001: price2001
-    };
-}
-
 function makeNumber(d){
   d = d.replace(",","");
   d = d.replace("$","");
   return parseInt(d);
 }
+
+function real_parser(d){
+    console.log(d);
+    //var trait = "AverageValueofDwelling2001";
+    var population2001 = makeNumber(d.TotalPop2001);
+    var price2001 = makeNumber(d.AverageValueofDwelling2001);
+    var population2006 = makeNumber(d.TotalPop2006);
+    var price2006 = makeNumber(d.AverageValueofDwelling2001);
+    return {
+      area: d.area,
+      pop2001: population2001,
+      price2001: price2001,
+      pop2006: population2006,
+      price2006: price2006,
+      pop2016: population2006,
+      price2016: price2006
+    };
+}
+
+
 
 function accessor(error,data){
       if(error){
@@ -46,36 +55,9 @@ function accessor(error,data){
           }else{
             dataglobal = data;
             worldglobal = world;
-            //plotmap("pop","2001");
           }
         }
     }
-}
-
-function priceaccessor(error,data){
-      if(error){
-        console.log(error);
-      }else{
-        d3.json("../data/van1.json", map)
-        function map(err, world)
-        {
-          if(err){
-            console.log(err)
-          }else{
-            plotpricemap(world,data);
-          }
-        }
-    }
-}
-
-
-function splitwork(data,map){
-  dataglobal = data;
-  worldglobal = map;
-  console.log(dataglobal);
-  console.log(map);
-  //plotbars(data);
-  plotmap("pop","2001");
 }
 
 function plotbars(data){
@@ -111,12 +93,15 @@ function plotbars(data){
 function plotmap(dimension,year){
   d3.select("svg").remove();
 
+  console.log("drawing map for " + dimension + year );
   var dim = dimension+year;
   let dimension_data = dataglobal.map(d => d[dim]);
   let dim_data = dimension_data.slice(0,-2);//removes values for entire city/area of vancouver
   var dim_max = Math.max(...dim_data);
+  console.log("dim max is "+dim_max);
   var dim_min = Math.min(...dimension_data);
   var dim_range = dim_max - dim_min;
+  console.log("dim range is "+dim_range);
 
   var width = 900,height = 600;
 
@@ -208,10 +193,10 @@ function updateMap(updatOption)
 {
  if (updatOption.localeCompare("Market Value") == 0)
  {
-	 plotmap("price","2001");
+	 plotmap("price",yearglobal);
  }
  else {
-   plotmap("pop","2001");
+   plotmap("pop",yearglobal);
  }
 }
 
@@ -229,14 +214,17 @@ function changeYear(year)
 	{
 		document.getElementById("h2").innerHTML = "2001";
 		console.log("Chose year 2001")
+    yearglobal = "2001";
 	}
 	else if (year == 2)
 	{
 		document.getElementById("h2").innerHTML = "2006";
 		console.log("Chose year 2006")
+    yearglobal = "2006";
 	}
 	else {
 		document.getElementById("h2").innerHTML = "2016";
 		console.log("Chose year 2016")
+    yearglobal = "2016"
 	}
 }
