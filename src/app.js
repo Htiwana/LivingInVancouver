@@ -4,7 +4,7 @@ var dataglobal;
 var worldglobal;
 var yearglobal = "2001";
 var dimensionglobal = "pop";
-var max = 300000
+var max = 3000000
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
 d3.csv("../data/realdatat.csv", real_parser, accessor)
@@ -189,14 +189,14 @@ function updateMap(updatOption)
 	dimensionglobal = "price"
 	plotmap();
 	d3.select("#legend").html("")
-	max = 100000
+	max = 3000000
 	legend(max)
  }
  else {
 	dimensionglobal = "pop"
 	plotmap();
 	d3.select("#legend").html("")
-	max = 300000
+	max = 65000
 	legend(max)
  }
 }
