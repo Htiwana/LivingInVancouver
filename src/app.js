@@ -4,6 +4,7 @@ var dataglobal;
 var worldglobal;
 var yearglobal = "2001";
 var dimensionglobal = "pop";
+var max = 300000
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
 d3.csv("../data/realdatat.csv", real_parser, accessor)
@@ -46,7 +47,7 @@ function accessor(error,data){
             dataglobal = data;
             worldglobal = world;
             plotmap();
-			legend(300000);
+			legend(max);
           }
         }
     }
@@ -187,12 +188,16 @@ function updateMap(updatOption)
  {
 	dimensionglobal = "price"
 	plotmap();
+	d3.select("#legend").html("")
+	max = 100000
 	legend(max)
  }
  else {
 	dimensionglobal = "pop"
 	plotmap();
-	legend(300000)
+	d3.select("#legend").html("")
+	max = 300000
+	legend(max)
  }
 }
 
@@ -233,7 +238,6 @@ function legend(max) {
 		// .domain([0,	10,	15,	20, 25, 100])
 		.domain([0, max])
 		.range(['#E28672','#A9FCAA']);
-
 	  // append a defs (for definition) element to your SVG
 	var svgLegend = d3.select('#legend').append('svg')
 		.attr("width",600);
@@ -241,7 +245,7 @@ function legend(max) {
 
 		// append a linearGradient element to the defs and give it a unique id
 	var linearGradient = defs.append('linearGradient')
-			.attr('id', 'linear-gradient');
+		.attr('id', 'linear-gradient');
 
 	// horizontal gradient
 	linearGradient
