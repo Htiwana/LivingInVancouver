@@ -4,7 +4,10 @@ var dataglobal;
 var worldglobal;
 var yearglobal = "2001";
 var dimensionglobal = "pop";
-var max = 3000000
+var max = 3000000 //legend initial max value
+
+var pop_selected = true;
+var price_selected = false;
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
 d3.csv("../data/realdatat.csv", real_parser, accessor)
@@ -129,7 +132,23 @@ function plotmap(){
     var mouse = d3.mouse(mapsvg.node()).map( d => parseInt(d) )
     tooltip.classed("hidden", false)
       .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 10) + "px")
-            .html(d.properties.name + "<br/>" + "<b>Population: </b>" + get_value(d) + "<br/>" + "<img src=https://cartocdn-gusc.global.ssl.fastly.net/vadimmarusin/api/v1/map/vadimmarusin@4fe53f5a@f8498f1d75c31bf8b0635194ec4bee7a:1544837817179/1/11/323/700.png>");
+            .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d) + "<br/>" + "<img src=https://cartocdn-gusc.global.ssl.fastly.net/vadimmarusin/api/v1/map/vadimmarusin@4fe53f5a@f8498f1d75c31bf8b0635194ec4bee7a:1544837817179/1/11/323/700.png>");
+  }
+  
+  function tooltip_string()
+  {
+	  if (pop_selected == true)
+	  {
+		  // console.log(pop_selected)
+		  string = "<b>Population: </b>"
+		  return string;
+	  }
+	  else if (price_selected == true)
+	  {
+		  // console.log(price_selected)
+		  string = "<b>Market Value: $</b>"
+		  return string;
+	  }
   }
 
   function get_value(d){
@@ -184,6 +203,8 @@ dropdownButton // Add a button
 
 function updateMap(updatOption)
 {
+ price_selected = false // for the text in the tooltip
+ pop_selected = false
  if (updatOption.localeCompare("Market Value") == 0)
  {
 	dimensionglobal = "price"
@@ -191,6 +212,7 @@ function updateMap(updatOption)
 	d3.select("#legend").html("")
 	max = 3000000
 	legend(max)
+	price_selected = true
  }
  else {
 	dimensionglobal = "pop"
@@ -198,6 +220,7 @@ function updateMap(updatOption)
 	d3.select("#legend").html("")
 	max = 65000
 	legend(max)
+	pop_selected = true
  }
 }
 
