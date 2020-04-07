@@ -4,7 +4,8 @@ var dataglobal;
 var worldglobal;
 var yearglobal = "2001";
 var dimensionglobal = "pop";
-var max = 3000000 //legend initial max value
+var max = 65000 //legend initial max value - population is always first
+var l_color = "#0f4c75"
 
 var pop_selected = true;
 var price_selected = false;
@@ -50,7 +51,7 @@ function accessor(error,data){
             dataglobal = data;
             worldglobal = world;
             plotmap();
-			legend(max);
+			legend(max, l_color);
           }
         }
     }
@@ -122,7 +123,7 @@ function plotmap(){
     .append("path")
     .attr( "d", geoPath )
     .attr("class",d=>d.properties.name)
-    .attr('fill', "#0f4c75")
+    .attr('fill', change_color)
     .attr('fill-opacity',set_opacity)
     .on("mousemove", draw_tooltip)
 	.on("mouseout", () =>	tooltip.classed("hidden", true));
@@ -133,6 +134,23 @@ function plotmap(){
     tooltip.classed("hidden", false)
       .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 150) + "px")
       .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d));
+  }
+  
+  // Changes color depending on the dimension selected
+  function change_color()
+  {
+	  if (pop_selected == true)
+	  {
+		  // console.log(pop_selected)
+		  color = "#0f4c75"
+		  return color;
+	  }
+	  else if (price_selected == true)
+	  {
+		  // console.log(price_selected)
+		  color = "#12750F"
+		  return color;
+	  }
   }
   
   function tooltip_string()
@@ -163,17 +181,18 @@ function plotmap(){
   }
 
     function set_opacity(d){
-      for ( let i = 0; i < 22; i++){
-          var dataset1 = dataglobal[i].area.replace("-", " ")
+        for ( let i = 0; i < 22; i++){
+            var dataset1 = dataglobal[i].area.replace("-", " ")
       		var dataset2 = d.properties.name.replace("-"," ")
+
             if(dataset1 == dataset2){
-              //console.log(dim_range);
-              return "" + (((dimension_data[i]/dim_range)))
+				//console.log(dim_range);
+				return "" + (((dimension_data[i]/dim_range)))
             }else if(i == 21){
-              return "0";
+				return "0";
             }
         }
-      }
+    }
 }
 
 
@@ -207,20 +226,24 @@ function updateMap(updatOption)
  pop_selected = false
  if (updatOption.localeCompare("Market Value") == 0)
  {
+	price_selected = true
 	dimensionglobal = "price"
 	plotmap();
+	
+	// clear the old legend and pass different parameters
 	d3.select("#legend").html("")
 	max = 3000000
-	legend(max)
-	price_selected = true
+	color = "#12750F"
+	legend(max, color)
  }
  else {
+	pop_selected = true
 	dimensionglobal = "pop"
 	plotmap();
 	d3.select("#legend").html("")
 	max = 65000
-	legend(max)
-	pop_selected = true
+	color = "#0f4c75"
+	legend(max, color)
  }
 }
 
@@ -256,7 +279,7 @@ function changeYear(year)
 }
 
 // Legend
-function legend(max) {
+function legend(max, l_color) {
 	var colorScale = d3.scaleLinear()
 		// .domain([0,	10,	15,	20, 25, 100])
 		.domain([0, max])
@@ -285,7 +308,7 @@ function legend(max) {
 		// {offset: "15%", color: "#CEB1DE"},
 		// {offset: "20%", color: "#95D3F0"},
 		// {offset: "25%", color: "#77EDD9"},
-		{offset: "100%", color: "#0f4c75"}
+		{offset: "100%", color: l_color}
 	  ])
 	  .enter().append("stop")
 	  .attr("offset", function(d) { 
