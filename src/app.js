@@ -9,6 +9,7 @@ var l_color = "#0f4c75"
 
 var pop_selected = true;
 var price_selected = false;
+var rent_selected = false
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
 d3.csv("../data/realdatat.csv", real_parser, accessor)
@@ -29,10 +30,13 @@ function real_parser(d){
       area: d.area,
       pop2001: +d.TotalPop2001,
       price2001: +d.AverageValueofDwelling2001,
+	  rent2001: +d.AverageRent2001,
       pop2006: +d.TotalPop2006,
       price2006: +d.AverageValueofDwelling2006,
+	  rent2006: +d.AverageRent2006,
       pop2016: +d.TotalPop2016,
       price2016: +d.AverageValueofDwelling2016,
+	  rent2016: +d.AverageRent2016,
     };
 }
 
@@ -151,6 +155,11 @@ function plotmap(){
 		  color = "#12750F"
 		  return color;
 	  }
+	  else if (rent_selected == true)
+	  {
+		  color = "#751E0F"
+		  return color;
+	  }
   }
   
   function tooltip_string()
@@ -165,6 +174,11 @@ function plotmap(){
 	  {
 		  // console.log(price_selected)
 		  string = "<b>Market Value: $</b>"
+		  return string;
+	  }
+	  else if (rent_selected == true)
+	  {
+		  string = "<b>Average Rent: $</b>"
 		  return string;
 	  }
   }
@@ -197,7 +211,7 @@ function plotmap(){
 
 
 // Options for dropdown
-var listOptions = ["Population", "Market Value"]
+var listOptions = ["Population", "Market Value", "Rent"]
 
 // Init button
 var dropdownButton = d3.select("#dropdown")
@@ -224,6 +238,7 @@ function updateMap(updatOption)
 {
  price_selected = false // for the text in the tooltip
  pop_selected = false
+ rent_selected = false
  if (updatOption.localeCompare("Market Value") == 0)
  {
 	price_selected = true
@@ -236,13 +251,22 @@ function updateMap(updatOption)
 	color = "#12750F"
 	legend(max, color)
  }
- else {
+ else if (updatOption.localeCompare("Population") == 0){
 	pop_selected = true
 	dimensionglobal = "pop"
 	plotmap();
 	d3.select("#legend").html("")
 	max = 65000
 	color = "#0f4c75"
+	legend(max, color)
+ }
+ else if (updatOption.localeCompare("Rent") == 0) {
+	rent_selected = true
+	dimensionglobal = "rent"
+	plotmap();
+	d3.select("#legend").html("")
+	max = 2000
+	color = "#751E0F"
 	legend(max, color)
  }
 }
