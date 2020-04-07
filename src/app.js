@@ -125,14 +125,14 @@ function plotmap(){
     .attr('fill', "#0f4c75")
     .attr('fill-opacity',set_opacity)
     .on("mousemove", draw_tooltip)
-	  .on("mouseout", () =>	tooltip.classed("hidden", true));
+	.on("mouseout", () =>	tooltip.classed("hidden", true));
 
   function draw_tooltip(d)
   {
     var mouse = d3.mouse(mapsvg.node()).map( d => parseInt(d) )
     tooltip.classed("hidden", false)
-      .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 10) + "px")
-            .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d) + "<br/>" + "<img src=https://cartocdn-gusc.global.ssl.fastly.net/vadimmarusin/api/v1/map/vadimmarusin@4fe53f5a@f8498f1d75c31bf8b0635194ec4bee7a:1544837817179/1/11/323/700.png>");
+      .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 150) + "px")
+      .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d));
   }
   
   function tooltip_string()
@@ -300,6 +300,7 @@ function legend(max) {
 	  .attr("class", "legendTitle")
 	  .attr("x", 10)
 	  .attr("y", 20)
+	  .attr("font-weight", "bold")
 	  .style("text-anchor", "left")
 	  .text("Legend");
 
