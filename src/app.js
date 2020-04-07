@@ -157,7 +157,7 @@ function plotmap(){
 	  }
 	  else if (rent_selected == true)
 	  {
-		  color = "#751E0F"
+		  color = "#670F75"
 		  return color;
 	  }
   }
@@ -266,7 +266,7 @@ function updateMap(updatOption)
 	plotmap();
 	d3.select("#legend").html("")
 	max = 2000
-	color = "#751E0F"
+	color = "#670F75"
 	legend(max, color)
  }
 }
