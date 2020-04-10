@@ -15,7 +15,7 @@ var medians2k16 = {
 };
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
-d3.csv("../data/realdatat.csv", real_parser, accessor)
+d3.csv("../data/realdata.csv", real_parser, accessor)
 //d3.csv("../data/realdata.csv", real_parser, priceaccessor)
 
 var tooltip = d3.select("#vanmap").append('div')
@@ -45,6 +45,12 @@ function real_parser(d){
       pop2016: +d.TotalPop2016,
       price2016: +d.AverageValueofDwelling2016,
 	  rent2016: +d.AverageRent2016,
+    owners2001: +d.Owneroccupied2001,
+    tenants2001: +d.Tenantoccupied2001,
+    owners2006: +d.Owneroccupied2006,
+    tenants2006: +d.Tenantoccupied2006,
+    owners2016: +d.Owneroccupied2016,
+    tenants2016: +d.Tenantoccupied2016,
     };
 }
 
