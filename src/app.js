@@ -18,6 +18,9 @@ var medians2k16 = {
 d3.csv("../data/realdatat.csv", real_parser, accessor)
 //d3.csv("../data/realdata.csv", real_parser, priceaccessor)
 
+var tooltip = d3.select("#vanmap").append('div')
+  .attr("class", "hidden tooltip");
+
 
 
 function parser(d){
@@ -155,9 +158,6 @@ function plotmap(){
     .attr( "width", width )
     .attr( "height", height );
 
-  var tooltip = d3.select("#vanmap").append('div')
-    .attr("class", "hidden tooltip");
-
   // Projection
   var projection = d3.geoMercator().fitExtent([[10, 10], [800 - 10, 600 - 10]], worldglobal)
 
@@ -173,16 +173,25 @@ function plotmap(){
     .attr("class",d=>d.properties.name)
     .attr('fill', change_color)
     .attr('fill-opacity',set_opacity)
-    .on("mousemove", draw_tooltip)
-	.on("mouseout", () =>	{tooltip.classed("hidden", true); });
+    .on("mousemove", draw_tooltip);
+	//.on("mouseout", () =>	{tooltip.classed("hidden", true); });
 
   function draw_tooltip(d)
   {
     var mouse = d3.mouse(mapsvg.node()).map( d => parseInt(d) )
     tooltip.classed("hidden", false)
       .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 200) + "px")
-      .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d));
+      .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d) + "<br/>");
 
+    var tooltipgraphic = tooltip.append('div').attr("class", "hidden tooltip");
+
+    tooltipgraphic.classed("hidden", false)
+         .append("svg")
+         .attr("width", svgWidth)
+         .attr("height", svgHeight)
+         .append("rect")
+             .attr("height", 50)
+             .attr("width", 60);
 
   }
 
