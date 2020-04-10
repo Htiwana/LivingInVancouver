@@ -179,7 +179,7 @@ function plotmap(){
   {
     var mouse = d3.mouse(mapsvg.node()).map( d => parseInt(d) )
     tooltip.classed("hidden", false)
-      .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 150) + "px")
+      .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 200) + "px")
       .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d));
 
 
