@@ -15,8 +15,11 @@ var medians2k16 = {
 };
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
-d3.csv("../data/realdatat.csv", real_parser, accessor)
+d3.csv("../data/realdata.csv", real_parser, accessor)
 //d3.csv("../data/realdata.csv", real_parser, priceaccessor)
+
+var tooltip = d3.select("#vanmap").append('div')
+  .attr("class", "hidden tooltip");
 
 
 
@@ -30,7 +33,7 @@ function parser(d){
 }
 
 function real_parser(d){
-    //console.log(d);
+    // console.log(d);
     return {
       area: d.area,
       pop2001: +d.TotalPop2001,
@@ -42,6 +45,12 @@ function real_parser(d){
       pop2016: +d.TotalPop2016,
       price2016: +d.AverageValueofDwelling2016,
 	  rent2016: +d.AverageRent2016,
+    owners2001: +d.Owneroccupied2001,
+    tenants2001: +d.Tenantoccupied2001,
+    owners2006: +d.Owneroccupied2006,
+    tenants2006: +d.Tenantoccupied2006,
+    owners2016: +d.Owneroccupied2016,
+    tenants2016: +d.Tenantoccupied2016,
     };
 }
 
@@ -60,7 +69,7 @@ function accessor(error,data){
             dataglobal = data;
             worldglobal = world;
             plotmap();
-			legend(min, max, l_color);
+
           }
         }
     }
@@ -129,8 +138,8 @@ const median = arr => {
 };
 
 function plotmap(){
-  d3.select("svg").remove();
-
+  d3.selectAll("svg").remove();
+  legend(min, max, l_color);
   console.log("drawing map for " + dimensionglobal + yearglobal );
   var dim = dimensionglobal+yearglobal;
   let dimension_data = dataglobal.map(d => d[dim]);
@@ -143,6 +152,12 @@ function plotmap(){
   console.log("dim min is "+dim_min);
   console.log("dim median is "+dim_median);
 
+  let renterdim = "tenants" + yearglobal;
+  let ownerdim = "owners" + yearglobal;
+
+  var renters = dataglobal.map(d => d[renterdim])
+  var owners = dataglobal.map(d => d[ownerdim])
+
   var dim_2k16_diff = medians2k16[dimensionglobal] - dim_median;
   // console.log("dim diff from 2k16 is "+dim_2k16_diff);
   // console.log("dim range is "+dim_range);
@@ -152,11 +167,9 @@ function plotmap(){
 
   var mapsvg = d3.select( "#vanmap" )
     .append( "svg" )
+    .attr("id","areas")
     .attr( "width", width )
     .attr( "height", height );
-
-  var tooltip = d3.select("#vanmap").append('div')
-    .attr("class", "hidden tooltip");
 
   // Projection
   var projection = d3.geoMercator().fitExtent([[10, 10], [800 - 10, 600 - 10]], worldglobal)
@@ -180,10 +193,55 @@ function plotmap(){
   {
     var mouse = d3.mouse(mapsvg.node()).map( d => parseInt(d) )
     tooltip.classed("hidden", false)
-      .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 200) + "px")
-      .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d));
+      .attr("style", "left: " + (mouse[0] + 50) + "px; top:" + (mouse[1] + 180) + "px")
+      .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d) + "<br/>");
+
+    residents = get_renters_owners(d);
+
+    // console.log("renters here"+residents.renters);
+	// console.log("owners here"+residents.owners);
+	
+    var graphic = tooltip.append("svg")
+         .attr("width", 400)
+         .attr("height", 70)
+
+    var g1 = graphic
+         .append("g");
+    var g2 = graphic
+              .append("g");
+
+         g1.append("rect")
+         .attr("height", 50)
+         .attr("width", calculate_renter_percent(d) +"%")
+         .attr("fill","red");
+
+         g1.append("text").text("Renters " + calculate_renter_percent(d) +"%")
+           .attr('y',70);
+
+         g2.append("rect")
+         .attr("height", 50)
+         .attr("width", calculate_owner_percent(d) +"%")
+         .attr("x", calculate_renter_percent(d) +"%")
+         .attr("fill","blue");
+
+         g2.append("text").text("Owners " + calculate_owner_percent(d) +"%")
+             .attr('y',70)
+             .attr('x',300);
 
 
+  }
+
+  function get_renters_owners(d){
+    for ( let i = 0; i < 22; i++){
+      var dataset1 = dataglobal[i].area.replace("-", " ")
+      var dataset2 = d.properties.name.replace("-"," ")
+        if((dataset1) == (dataset2)){
+            return {
+              renters: renters[i],
+              owners: owners[i]
+            }
+        }
+    }
   }
 
   function get_value(d){
@@ -195,6 +253,20 @@ function plotmap(){
             return value
         }
     }
+  }
+  
+  function calculate_owner_percent(d)
+  {
+	  var total = residents.owners + residents.renters
+	  var owners = (residents.owners / total) * 100
+	  return Math.floor(owners)
+  }
+  
+    function calculate_renter_percent(d)
+  {
+	  var total = residents.owners + residents.renters
+	  var renters = (residents.renters / total) * 100
+	  return Math.floor(renters)
   }
 
     function set_opacity(d){
@@ -248,8 +320,8 @@ function updateMap(updatOption)
 	d3.select("#legend").html("")
 	max = 3247312
 	min = 198301
-	color = "#12750F"
-	legend(min, max, color)
+	l_color = "#12750F"
+	legend(min, max, l_color)
  }
  else if (updatOption.localeCompare("Population") == 0){
 	dimensionglobal = "pop"
@@ -257,8 +329,8 @@ function updateMap(updatOption)
 	d3.select("#legend").html("")
 	max = 62030
 	min = 6995
-	color = "#0f4c75"
-	legend(min, max, color)
+	l_color = "#0f4c75"
+	legend(min, max, l_color)
  }
  else if (updatOption.localeCompare("Rent") == 0) {
 	dimensionglobal = "rent"
@@ -266,8 +338,8 @@ function updateMap(updatOption)
 	d3.select("#legend").html("")
 	max = 1824
 	min = 421
-	color = "#670F75"
-	legend(min, max, color)
+	l_color = "#670F75"
+	legend(min, max, l_color)
  }
 }
 
