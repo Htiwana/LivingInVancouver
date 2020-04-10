@@ -4,8 +4,9 @@ var dataglobal;
 var worldglobal;
 var yearglobal = "2001";
 var dimensionglobal = "pop";
-var max = 65000 //legend initial max value - population is always first
-var l_color = "#0f4c75"
+var max = 63000; //legend initial max value - population is always first
+var min = 37000;
+var l_color = "#0f4c75";
 
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
@@ -52,7 +53,7 @@ function accessor(error,data){
             dataglobal = data;
             worldglobal = world;
             plotmap();
-			legend(max, l_color);
+			legend(min, max, l_color);
           }
         }
     }
@@ -226,25 +227,28 @@ function updateMap(updatOption)
 
 	// clear the old legend and pass different parameters
 	d3.select("#legend").html("")
-	max = 3000000
+	max = 3250000
+	min = 675000
 	color = "#12750F"
-	legend(max, color)
+	legend(min, max, color)
  }
  else if (updatOption.localeCompare("Population") == 0){
 	dimensionglobal = "pop"
 	plotmap();
 	d3.select("#legend").html("")
-	max = 65000
+	max = 63000
+	min = 37000
 	color = "#0f4c75"
-	legend(max, color)
+	legend(min, max, color)
  }
  else if (updatOption.localeCompare("Rent") == 0) {
 	dimensionglobal = "rent"
 	plotmap();
 	d3.select("#legend").html("")
 	max = 2000
+	min = 850
 	color = "#670F75"
-	legend(max, color)
+	legend(min, max, color)
  }
 }
 
@@ -280,10 +284,10 @@ function changeYear(year)
 }
 
 // Legend
-function legend(max, l_color) {
+function legend(min, max, l_color) {
 	var colorScale = d3.scaleLinear()
 		// .domain([0,	10,	15,	20, 25, 100])
-		.domain([0, max])
+		.domain([min, max])
 		.range(['#E28672','#A9FCAA']);
 	  // append a defs (for definition) element to your SVG
 	var svgLegend = d3.select('#legend').append('svg')
@@ -338,8 +342,8 @@ function legend(max, l_color) {
 
 	//create tick marks
 	var xLeg = d3.scaleLinear()
-	  .domain([0, max])
-	  .range([10, 409]); //width of the bar
+	  .domain([min, max])
+	  .range([17, 409]); //width of the bar
 
 	var axisLegend = d3.axisBottom(xLeg)
 	  .tickValues(colorScale.domain())
