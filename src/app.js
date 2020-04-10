@@ -371,5 +371,6 @@ function legend(min, max, l_color) {
 	  .attr("class", "axis")
 	  .append("g")
 	  .attr("transform", "translate(0, 40)")
-	  .call(axisLegend);
+	  .call(axisLegend)
+	  .select(".domain").remove(); //removes the stroke path on the legend
 }
