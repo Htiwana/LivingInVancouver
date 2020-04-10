@@ -33,7 +33,7 @@ function parser(d){
 }
 
 function real_parser(d){
-    //console.log(d);
+    // console.log(d);
     return {
       area: d.area,
       pop2001: +d.TotalPop2001,
@@ -188,7 +188,7 @@ function plotmap(){
   {
     var mouse = d3.mouse(mapsvg.node()).map( d => parseInt(d) )
     tooltip.classed("hidden", false)
-      .attr("style", "left: " + (mouse[0] + 100) + "px; top:" + (mouse[1] + 200) + "px")
+      .attr("style", "left: " + (mouse[0] + 50) + "px; top:" + (mouse[1] + 180) + "px")
       .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d) + "<br/>");
 
     var graphic = tooltip.append("svg")
@@ -205,7 +205,7 @@ function plotmap(){
          .attr("width", 300)
          .attr("fill","red");
 
-         g1.append("text").text("Renters 75%")
+         g1.append("text").text("Renters " + calculate_renter_percent() +"%")
            .attr('y',70);
 
          g2.append("rect")
@@ -214,7 +214,7 @@ function plotmap(){
          .attr("x",300)
          .attr("fill","blue");
 
-         g2.append("text").text("Owners 75%")
+         g2.append("text").text("Owners " + calculate_owner_percent() +"%")
              .attr('y',70)
              .attr('x',300);
 
@@ -230,6 +230,24 @@ function plotmap(){
             return value
         }
     }
+  }
+  
+  function calculate_owner_percent()
+  {
+	  var owners = 1000
+	  var renters = 1234
+	  var total = owners + renters
+	  owners = (owners / total) * 100
+	  return Math.floor(owners)
+  }
+  
+    function calculate_renter_percent()
+  {
+	  var owners = 1000
+	  var renters = 1234
+	  var total = owners + renters
+	  renters = (renters / total) * 100
+	  return Math.floor(renters)
   }
 
     function set_opacity(d){
