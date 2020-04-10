@@ -173,20 +173,17 @@ function plotmap(){
     .attr("class",d=>d.properties.name)
     .attr('fill', change_color)
     .attr('fill-opacity',set_opacity)
-    .on("mousemove", draw_tooltip);
-	//.on("mouseout", () =>	{tooltip.classed("hidden", true); });
+    .on("mousemove", draw_tooltip)
+	  .on("mouseout", () =>	{tooltip.classed("hidden", true); });
 
   function draw_tooltip(d)
   {
     var mouse = d3.mouse(mapsvg.node()).map( d => parseInt(d) )
     tooltip.classed("hidden", false)
-      .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 200) + "px")
+      .attr("style", "left: " + (mouse[0] + 100) + "px; top:" + (mouse[1] + 200) + "px")
       .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d) + "<br/>");
 
-    var tooltipgraphic = tooltip.append('div').attr("class", "hidden tooltip");
-
-    tooltipgraphic.classed("hidden", false)
-         .append("svg")
+         tooltip.append("svg")
          .attr("width", svgWidth)
          .attr("height", svgHeight)
          .append("rect")
