@@ -4,8 +4,8 @@ var dataglobal;
 var worldglobal;
 var yearglobal = "2001";
 var dimensionglobal = "pop";
-var max = 63000; //legend initial max value - population is always first
-var min = 37000;
+var max = 62030; //legend initial max value - population is always first
+var min = 6995;
 var l_color = "#0f4c75";
 
 var medians2k16 = {
@@ -144,8 +144,8 @@ function plotmap(){
   console.log("dim median is "+dim_median);
 
   var dim_2k16_diff = medians2k16[dimensionglobal] - dim_median;
-  console.log("dim diff from 2k16 is "+dim_2k16_diff);
-  console.log("dim range is "+dim_range);
+  // console.log("dim diff from 2k16 is "+dim_2k16_diff);
+  // console.log("dim range is "+dim_range);
 
 
   var width = 900,height = 600;
@@ -246,8 +246,8 @@ function updateMap(updatOption)
 
 	// clear the old legend and pass different parameters
 	d3.select("#legend").html("")
-	max = 3250000
-	min = 675000
+	max = 3247312
+	min = 198301
 	color = "#12750F"
 	legend(min, max, color)
  }
@@ -255,8 +255,8 @@ function updateMap(updatOption)
 	dimensionglobal = "pop"
 	plotmap();
 	d3.select("#legend").html("")
-	max = 63000
-	min = 37000
+	max = 62030
+	min = 6995
 	color = "#0f4c75"
 	legend(min, max, color)
  }
@@ -264,8 +264,8 @@ function updateMap(updatOption)
 	dimensionglobal = "rent"
 	plotmap();
 	d3.select("#legend").html("")
-	max = 2000
-	min = 850
+	max = 1824
+	min = 421
 	color = "#670F75"
 	legend(min, max, color)
  }
