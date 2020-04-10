@@ -114,6 +114,11 @@ function tooltip_string()
           return "<b>Population: </b>";
     }
 }
+const median = arr => {
+  const mid = Math.floor(arr.length / 2),
+    nums = [...arr].sort((a, b) => a - b);
+  return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+};
 
 function plotmap(){
   d3.select("svg").remove();
@@ -126,7 +131,11 @@ function plotmap(){
   console.log("dim max is "+dim_max);
   var dim_min = Math.min(...dimension_data);
   var dim_range = dim_max - dim_min;
+  var dim_median = median(dimension_data);
+  console.log("dim min is "+dim_min);
+  console.log("dim median is "+dim_median);
   console.log("dim range is "+dim_range);
+
 
   var width = 900,height = 600;
 
@@ -184,7 +193,7 @@ function plotmap(){
 
             if(dataset1 == dataset2){
 				//console.log(dim_range);
-				return "" + ((((dimension_data[i]-dim_min)/dim_range)))
+				return "" +(0.5 + ((((dimension_data[i]-dim_median)/dim_range))))
             }else if(i == 21){
 				return "0";
             }
