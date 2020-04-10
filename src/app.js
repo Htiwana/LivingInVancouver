@@ -196,9 +196,11 @@ function plotmap(){
       .attr("style", "left: " + (mouse[0] + 50) + "px; top:" + (mouse[1] + 180) + "px")
       .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d) + "<br/>");
 
-    var residents = get_renters_owners(d);
+    residents = get_renters_owners(d);
 
     console.log("renters here"+residents.renters);
+	console.log("owners here"+residents.owners);
+	
     var graphic = tooltip.append("svg")
          .attr("width", 400)
          .attr("height", 70)
@@ -210,19 +212,19 @@ function plotmap(){
 
          g1.append("rect")
          .attr("height", 50)
-         .attr("width", calculate_renter_percent() +"%")
+         .attr("width", calculate_renter_percent(d) +"%")
          .attr("fill","red");
 
-         g1.append("text").text("Renters " + calculate_renter_percent() +"%")
+         g1.append("text").text("Renters " + calculate_renter_percent(d) +"%")
            .attr('y',70);
 
          g2.append("rect")
          .attr("height", 50)
-         .attr("width", calculate_owner_percent() +"%")
-         .attr("x", calculate_renter_percent() +"%")
+         .attr("width", calculate_owner_percent(d) +"%")
+         .attr("x", calculate_renter_percent(d) +"%")
          .attr("fill","blue");
 
-         g2.append("text").text("Owners " + calculate_owner_percent() +"%")
+         g2.append("text").text("Owners " + calculate_owner_percent(d) +"%")
              .attr('y',70)
              .attr('x',300);
 
@@ -253,21 +255,17 @@ function plotmap(){
     }
   }
   
-  function calculate_owner_percent()
+  function calculate_owner_percent(d)
   {
-	  var owners = 1000
-	  var renters = 1234
-	  var total = owners + renters
-	  owners = (owners / total) * 100
+	  var total = residents.owners + residents.renters
+	  var owners = (residents.owners / total) * 100
 	  return Math.floor(owners)
   }
   
-    function calculate_renter_percent()
+    function calculate_renter_percent(d)
   {
-	  var owners = 1000
-	  var renters = 1234
-	  var total = owners + renters
-	  renters = (renters / total) * 100
+	  var total = residents.owners + residents.renters
+	  var renters = (residents.renters / total) * 100
 	  return Math.floor(renters)
   }
 
