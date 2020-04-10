@@ -259,14 +259,14 @@ function plotmap(){
   {
 	  var total = residents.owners + residents.renters
 	  var owners = (residents.owners / total) * 100
-	  return Math.floor(owners)
+	  return Number((owners).toFixed(1))
   }
   
     function calculate_renter_percent(d)
   {
 	  var total = residents.owners + residents.renters
 	  var renters = (residents.renters / total) * 100
-	  return Math.floor(renters)
+	  return Number((renters).toFixed(1))
   }
 
     function set_opacity(d){
