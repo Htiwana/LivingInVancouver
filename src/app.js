@@ -140,7 +140,6 @@ const median = arr => {
 function plotmap(){
   d3.selectAll("svg").remove();
   legend(min, max, l_color);
-
   console.log("drawing map for " + dimensionglobal + yearglobal );
   var dim = dimensionglobal+yearglobal;
   let dimension_data = dataglobal.map(d => d[dim]);
@@ -152,6 +151,12 @@ function plotmap(){
   var dim_median = median(dimension_data);
   console.log("dim min is "+dim_min);
   console.log("dim median is "+dim_median);
+
+  let renterdim = "tenants" + yearglobal;
+  let ownerdim = "owners" + yearglobal;
+
+  var renters = dataglobal.map(d => d[renterdim])
+  var owners = dataglobal.map(d => d[ownerdim])
 
   var dim_2k16_diff = medians2k16[dimensionglobal] - dim_median;
   // console.log("dim diff from 2k16 is "+dim_2k16_diff);
@@ -191,6 +196,9 @@ function plotmap(){
       .attr("style", "left: " + (mouse[0] + 100) + "px; top:" + (mouse[1] + 200) + "px")
       .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d) + "<br/>");
 
+    var residents = get_renters_owners(d);
+
+    console.log("renters here"+residents.renters);
     var graphic = tooltip.append("svg")
          .attr("width", 400)
          .attr("height", 70)
@@ -219,6 +227,19 @@ function plotmap(){
              .attr('x',300);
 
 
+  }
+
+  function get_renters_owners(d){
+    for ( let i = 0; i < 22; i++){
+      var dataset1 = dataglobal[i].area.replace("-", " ")
+      var dataset2 = d.properties.name.replace("-"," ")
+        if((dataset1) == (dataset2)){
+            return {
+              renters: renters[i],
+              owners: owners[i]
+            }
+        }
+    }
   }
 
   function get_value(d){
