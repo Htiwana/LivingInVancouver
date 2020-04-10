@@ -63,7 +63,7 @@ function accessor(error,data){
             dataglobal = data;
             worldglobal = world;
             plotmap();
-			legend(min, max, l_color);
+
           }
         }
     }
@@ -132,7 +132,8 @@ const median = arr => {
 };
 
 function plotmap(){
-  d3.select("svg").remove();
+  d3.selectAll("svg").remove();
+  legend(min, max, l_color);
 
   console.log("drawing map for " + dimensionglobal + yearglobal );
   var dim = dimensionglobal+yearglobal;
@@ -155,6 +156,7 @@ function plotmap(){
 
   var mapsvg = d3.select( "#vanmap" )
     .append( "svg" )
+    .attr("id","areas")
     .attr( "width", width )
     .attr( "height", height );
 
@@ -184,8 +186,8 @@ function plotmap(){
       .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d) + "<br/>");
 
          tooltip.append("svg")
-         .attr("width", svgWidth)
-         .attr("height", svgHeight)
+         .attr("width", 400)
+         .attr("height", 300)
          .append("rect")
              .attr("height", 50)
              .attr("width", 60);
@@ -254,8 +256,8 @@ function updateMap(updatOption)
 	d3.select("#legend").html("")
 	max = 3247312
 	min = 198301
-	color = "#12750F"
-	legend(min, max, color)
+	l_color = "#12750F"
+	legend(min, max, l_color)
  }
  else if (updatOption.localeCompare("Population") == 0){
 	dimensionglobal = "pop"
@@ -263,8 +265,8 @@ function updateMap(updatOption)
 	d3.select("#legend").html("")
 	max = 62030
 	min = 6995
-	color = "#0f4c75"
-	legend(min, max, color)
+	l_color = "#0f4c75"
+	legend(min, max, l_color)
  }
  else if (updatOption.localeCompare("Rent") == 0) {
 	dimensionglobal = "rent"
@@ -272,8 +274,8 @@ function updateMap(updatOption)
 	d3.select("#legend").html("")
 	max = 1824
 	min = 421
-	color = "#670F75"
-	legend(min, max, color)
+	l_color = "#670F75"
+	legend(min, max, l_color)
  }
 }
 
