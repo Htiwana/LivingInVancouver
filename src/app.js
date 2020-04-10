@@ -187,7 +187,7 @@ function plotmap(){
     .attr('fill', change_color)
     .attr('fill-opacity',set_opacity)
     .on("mousemove", draw_tooltip)
-	  ;//.on("mouseout", () =>	{tooltip.classed("hidden", true); });
+	.on("mouseout", () =>	{tooltip.classed("hidden", true); });
 
   function draw_tooltip(d)
   {
@@ -198,8 +198,8 @@ function plotmap(){
 
     residents = get_renters_owners(d);
 
-    console.log("renters here"+residents.renters);
-	console.log("owners here"+residents.owners);
+    // console.log("renters here"+residents.renters);
+	// console.log("owners here"+residents.owners);
 	
     var graphic = tooltip.append("svg")
          .attr("width", 400)
