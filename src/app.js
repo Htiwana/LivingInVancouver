@@ -202,7 +202,7 @@ function plotmap(){
 
          g1.append("rect")
          .attr("height", 50)
-         .attr("width", 300)
+         .attr("width", calculate_renter_percent() +"%")
          .attr("fill","red");
 
          g1.append("text").text("Renters " + calculate_renter_percent() +"%")
@@ -210,8 +210,8 @@ function plotmap(){
 
          g2.append("rect")
          .attr("height", 50)
-         .attr("width", 100)
-         .attr("x",300)
+         .attr("width", calculate_owner_percent() +"%")
+         .attr("x", calculate_renter_percent() +"%")
          .attr("fill","blue");
 
          g2.append("text").text("Owners " + calculate_owner_percent() +"%")
