@@ -154,7 +154,7 @@ function plotmap(){
     .attr('fill', change_color)
     .attr('fill-opacity',set_opacity)
     .on("mousemove", draw_tooltip)
-	.on("mouseout", () =>	tooltip.classed("hidden", true));
+	.on("mouseout", () =>	{tooltip.classed("hidden", true); });
 
   function draw_tooltip(d)
   {
@@ -162,6 +162,8 @@ function plotmap(){
     tooltip.classed("hidden", false)
       .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 150) + "px")
       .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d));
+
+
   }
 
   function get_value(d){
@@ -182,7 +184,7 @@ function plotmap(){
 
             if(dataset1 == dataset2){
 				//console.log(dim_range);
-				return "" + (((dimension_data[i]/dim_range)))
+				return "" + ((((dimension_data[i]-dim_min)/dim_range)))
             }else if(i == 21){
 				return "0";
             }
