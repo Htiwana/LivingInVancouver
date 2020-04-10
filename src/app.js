@@ -7,10 +7,17 @@ var dimensionglobal = "pop";
 var max = 65000 //legend initial max value - population is always first
 var l_color = "#0f4c75"
 
+var medians2k16 = {
+  pop: 30195,
+  price: 1370949,
+  rent : 1302
+};
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
 d3.csv("../data/realdatat.csv", real_parser, accessor)
 //d3.csv("../data/realdata.csv", real_parser, priceaccessor)
+
+
 
 function parser(d){
 
@@ -134,6 +141,9 @@ function plotmap(){
   var dim_median = median(dimension_data);
   console.log("dim min is "+dim_min);
   console.log("dim median is "+dim_median);
+
+  var dim_2k16_diff = medians2k16[dimensionglobal] - dim_median;
+  console.log("dim diff from 2k16 is "+dim_2k16_diff);
   console.log("dim range is "+dim_range);
 
 
@@ -193,7 +203,7 @@ function plotmap(){
 
             if(dataset1 == dataset2){
 				//console.log(dim_range);
-				return "" +(0.5 + ((((dimension_data[i]-dim_median)/dim_range))))
+				return "" +(0.5  + ((((dimension_data[i]-(dim_median+ (dim_2k16_diff/2)))/dim_range))))
             }else if(i == 21){
 				return "0";
             }
