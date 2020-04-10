@@ -7,9 +7,6 @@ var dimensionglobal = "pop";
 var max = 65000 //legend initial max value - population is always first
 var l_color = "#0f4c75"
 
-var pop_selected = true;
-var price_selected = false;
-var rent_selected = false
 
 //d3.csv("../data/simpledat.csv", parser, accessor)
 d3.csv("../data/realdatat.csv", real_parser, accessor)
@@ -89,7 +86,34 @@ function plotbars(data){
       .attr("transform", d => "rotate(0)");
 }
 
+// Changes color depending on the dimension selected
+function change_color()
+{
+  switch(dimensionglobal){
+      case "rent":
+        return "#670F75";
+        break;
+      case "price":
+        return "#12750F";
+        break;
+      default:
+        return "#0f4c75";
+  }
+}
 
+function tooltip_string()
+{
+  switch(dimensionglobal){
+        case "rent":
+          return "<b>Average Rent: $</b>";
+          break;
+        case "price":
+          return "<b>Market Value: $</b>";
+          break;
+        default:
+          return "<b>Population: </b>";
+    }
+}
 
 function plotmap(){
   d3.select("svg").remove();
@@ -138,49 +162,6 @@ function plotmap(){
     tooltip.classed("hidden", false)
       .attr("style", "left: " + (mouse[0] + 10) + "px; top:" + (mouse[1] + 150) + "px")
       .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d));
-  }
-  
-  // Changes color depending on the dimension selected
-  function change_color()
-  {
-	  if (pop_selected == true)
-	  {
-		  // console.log(pop_selected)
-		  color = "#0f4c75"
-		  return color;
-	  }
-	  else if (price_selected == true)
-	  {
-		  // console.log(price_selected)
-		  color = "#12750F"
-		  return color;
-	  }
-	  else if (rent_selected == true)
-	  {
-		  color = "#670F75"
-		  return color;
-	  }
-  }
-  
-  function tooltip_string()
-  {
-	  if (pop_selected == true)
-	  {
-		  // console.log(pop_selected)
-		  string = "<b>Population: </b>"
-		  return string;
-	  }
-	  else if (price_selected == true)
-	  {
-		  // console.log(price_selected)
-		  string = "<b>Market Value: $</b>"
-		  return string;
-	  }
-	  else if (rent_selected == true)
-	  {
-		  string = "<b>Average Rent: $</b>"
-		  return string;
-	  }
   }
 
   function get_value(d){
@@ -236,15 +217,11 @@ dropdownButton // Add a button
 
 function updateMap(updatOption)
 {
- price_selected = false // for the text in the tooltip
- pop_selected = false
- rent_selected = false
  if (updatOption.localeCompare("Market Value") == 0)
  {
-	price_selected = true
 	dimensionglobal = "price"
 	plotmap();
-	
+
 	// clear the old legend and pass different parameters
 	d3.select("#legend").html("")
 	max = 3000000
@@ -252,7 +229,6 @@ function updateMap(updatOption)
 	legend(max, color)
  }
  else if (updatOption.localeCompare("Population") == 0){
-	pop_selected = true
 	dimensionglobal = "pop"
 	plotmap();
 	d3.select("#legend").html("")
@@ -261,7 +237,6 @@ function updateMap(updatOption)
 	legend(max, color)
  }
  else if (updatOption.localeCompare("Rent") == 0) {
-	rent_selected = true
 	dimensionglobal = "rent"
 	plotmap();
 	d3.select("#legend").html("")
@@ -335,11 +310,11 @@ function legend(max, l_color) {
 		{offset: "100%", color: l_color}
 	  ])
 	  .enter().append("stop")
-	  .attr("offset", function(d) { 
-		return d.offset; 
+	  .attr("offset", function(d) {
+		return d.offset;
 	  })
-	  .attr("stop-color", function(d) { 
-		return d.color; 
+	  .attr("stop-color", function(d) {
+		return d.color;
 	  });
 
 	// append title
