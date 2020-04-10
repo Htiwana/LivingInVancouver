@@ -176,7 +176,7 @@ function plotmap(){
     .attr('fill', change_color)
     .attr('fill-opacity',set_opacity)
     .on("mousemove", draw_tooltip)
-	  .on("mouseout", () =>	{tooltip.classed("hidden", true); });
+	  ;//.on("mouseout", () =>	{tooltip.classed("hidden", true); });
 
   function draw_tooltip(d)
   {
@@ -185,12 +185,33 @@ function plotmap(){
       .attr("style", "left: " + (mouse[0] + 100) + "px; top:" + (mouse[1] + 200) + "px")
       .html(d.properties.name + "<br/>" + tooltip_string() + get_value(d) + "<br/>");
 
-         tooltip.append("svg")
+    var graphic = tooltip.append("svg")
          .attr("width", 400)
-         .attr("height", 300)
-         .append("rect")
-             .attr("height", 50)
-             .attr("width", 60);
+         .attr("height", 70)
+
+    var g1 = graphic
+         .append("g");
+    var g2 = graphic
+              .append("g");
+
+         g1.append("rect")
+         .attr("height", 50)
+         .attr("width", 300)
+         .attr("fill","red");
+
+         g1.append("text").text("Renters 75%")
+           .attr('y',70);
+
+         g2.append("rect")
+         .attr("height", 50)
+         .attr("width", 100)
+         .attr("x",300)
+         .attr("fill","blue");
+
+         g2.append("text").text("Owners 75%")
+             .attr('y',70)
+             .attr('x',300);
+
 
   }
 
