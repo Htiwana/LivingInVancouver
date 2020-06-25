@@ -2,7 +2,7 @@
 ## Population, Demographics and Housing Prices ##
 ### 2003-2016 ###
 
-**Interact with the Visualization at: https://liuallan.github.io/Data-Visualization-VancouverHousingMarket/**
+**Interact with the Visualization at: https://htiwana.github.io/LivingInVancouver/**
 
 Project was made using:
 
