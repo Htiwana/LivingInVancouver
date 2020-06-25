@@ -1,6 +1,6 @@
-## A Visualization of Vancovuer
-## Population, Demographics and Housing Prices
-## 2003-2016
+# A Visualization of Vancovuer #
+## Population, Demographics and Housing Prices ##
+### 2003-2016 ###
 
 
 Project was made using:
